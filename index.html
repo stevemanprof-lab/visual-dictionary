@@ -1,30 +1,654 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Visual Dictionary</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/animations.css">
-  <link rel="stylesheet" href="css/responsive.css">
-  <link rel="stylesheet" href="css/games.css">
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Kids Visual Dictionary</title>
+
+<meta name="theme-color" content="#4FC3F7">
+
+<link rel="manifest" href="manifest.json">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="css/style.css">
+
+<link
+rel="stylesheet"
+href="css/animations.css">
+
+<link
+rel="stylesheet"
+href="css/responsive.css">
+
 </head>
+
 <body>
-  <header>
-    <h1>Visual Dictionary</h1>
-  </header>
 
-  <main>
-    <section id="learn"></section>
-    <section id="flashcards"></section>
-    <section id="quiz"></section>
-    <section id="progress-container"></section>
-  </main>
+<div id="loadingScreen">
 
-  <script src="js/utils.js"></script>
-  <script src="js/database.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/flashcards.js"></script>
-  <script src="js/quiz.js"></script>
-  <script src="js/progress.js"></script>
+<div class="loader">
+
+<div class="loaderMascot">
+
+🐼
+
+</div>
+
+<h1>
+
+Loading...
+
+</h1>
+
+<div class="loadingBar">
+
+<div id="loadingFill"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<header>
+
+<div class="logo">
+
+📚
+
+<h1>
+
+Visual Dictionary
+
+</h1>
+
+</div>
+
+<div class="topButtons">
+
+<button id="teacherBtn">
+
+👨‍🏫
+
+</button>
+
+<button id="settingsBtn">
+
+⚙
+
+</button>
+
+</div>
+
+</header>
+
+<main>
+
+<section id="homePage"
+class="page active">
+
+<div class="hero">
+
+<div id="mascot">
+
+🐼
+
+</div>
+
+<h2>
+
+Let's Learn English!
+
+</h2>
+
+<p>
+
+Choose an activity
+
+</p>
+
+</div>
+
+<div class="menuGrid">
+
+<button
+class="menuCard"
+data-page="learnPage">
+
+📖
+
+<span>
+
+Learn
+
+</span>
+
+</button>
+
+<button
+class="menuCard"
+data-page="flashcardPage">
+
+🃏
+
+<span>
+
+Flashcards
+
+</span>
+
+</button>
+
+<button
+class="menuCard"
+data-page="quizPage">
+
+🎯
+
+<span>
+
+Quiz
+
+</span>
+
+</button>
+
+<button
+class="menuCard"
+data-page="dragPage">
+
+🧩
+
+<span>
+
+Drag & Drop
+
+</span>
+
+</button>
+
+<button
+class="menuCard"
+data-page="memoryPage">
+
+🧠
+
+<span>
+
+Memory
+
+</span>
+
+</button>
+
+<button
+class="menuCard"
+data-page="spellingPage">
+
+⌨
+
+<span>
+
+Spelling
+
+</span>
+
+</button>
+
+<button
+class="menuCard"
+data-page="progressPage">
+
+🏆
+
+<span>
+
+Progress
+
+</span>
+
+</button>
+
+</div>
+
+</section>
+
+<section
+id="learnPage"
+class="page">
+
+<div class="toolbar">
+
+<button class="backButton">
+
+← Home
+
+</button>
+
+<select
+id="categorySelect">
+
+<option value="all">
+
+All Categories
+
+</option>
+
+</select>
+
+<input
+id="searchWord"
+type="text"
+placeholder="Search a word...">
+
+</div>
+
+<div
+id="lessonCard">
+
+<div class="imageBox">
+
+<img
+id="lessonImage">
+
+</div>
+
+<h2
+id="lessonWord">
+
+Apple
+
+</h2>
+
+<p
+id="lessonSentence">
+
+This is an apple.
+
+</p>
+
+<div class="lessonButtons">
+
+<button
+id="speakButton">
+
+🔊 Listen
+
+</button>
+
+<button
+id="nextButton">
+
+Next →
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<section
+id="flashcardPage"
+class="page">
+
+<button
+class="backButton">
+
+← Home
+
+</button>
+
+<div
+id="flashcardContainer">
+
+</div>
+
+</section>
+
+<section
+id="quizPage"
+class="page">
+
+<button
+class="backButton">
+
+← Home
+
+</button>
+
+<div
+id="quizContainer">
+
+</div>
+
+</section>
+
+<section
+id="dragPage"
+class="page">
+
+<button
+class="backButton">
+
+← Home
+
+</button>
+
+<div
+id="dragContainer">
+
+</div>
+
+</section>
+
+<section
+id="memoryPage"
+class="page">
+
+<button
+class="backButton">
+
+← Home
+
+</button>
+
+<div
+id="memoryContainer">
+
+</div>
+
+</section>
+
+<section
+id="spellingPage"
+class="page">
+
+<button
+class="backButton">
+
+← Home
+
+</button>
+
+<div
+id="spellingContainer">
+
+</div>
+
+</section>
+
+<section
+id="progressPage"
+class="page">
+
+<button
+class="backButton">
+
+← Home
+
+</button>
+
+<div
+class="progressCard">
+
+<h2>
+
+Your Progress
+
+</h2>
+
+<div
+class="bigProgress">
+
+<div
+id="progressCircle">
+
+0%
+
+</div>
+
+</div>
+
+<div
+id="statistics">
+
+<div>
+
+⭐
+
+<span id="starsEarned">
+
+0
+
+</span>
+
+</div>
+
+<div>
+
+🏆
+
+<span id="badgesEarned">
+
+0
+
+</span>
+
+</div>
+
+<div>
+
+📖
+
+<span id="wordsLearned">
+
+0
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+
+<nav>
+
+<button
+class="navButton"
+data-page="homePage">
+
+🏠
+
+Home
+
+</button>
+
+<button
+class="navButton"
+data-page="learnPage">
+
+📖
+
+Learn
+
+</button>
+
+<button
+class="navButton"
+data-page="quizPage">
+
+🎮
+
+Play
+
+</button>
+
+<button
+class="navButton"
+data-page="progressPage">
+
+🏆
+
+Progress
+
+</button>
+
+</nav>
+
+</footer>
+
+<div
+id="confettiContainer">
+
+</div>
+
+<div
+id="toast">
+
+</div>
+
+<div
+id="teacherModal"
+class="modal">
+
+<div
+class="modalContent">
+
+<h2>
+
+Teacher Area
+
+</h2>
+
+<input
+id="teacherPassword"
+type="password"
+placeholder="Password">
+
+<button
+id="teacherLogin">
+
+Login
+
+</button>
+
+<button
+class="closeModal">
+
+Close
+
+</button>
+
+</div>
+
+</div>
+
+<div
+id="settingsModal"
+class="modal">
+
+<div
+class="modalContent">
+
+<h2>
+
+Settings
+
+</h2>
+
+<label>
+
+Voice
+
+<select
+id="voiceSelect">
+
+</select>
+
+</label>
+
+<label>
+
+Speed
+
+<input
+id="speechRate"
+type="range"
+min="0.6"
+max="1.3"
+step="0.1"
+value="1">
+
+</label>
+
+<label>
+
+Dark Mode
+
+<input
+id="darkToggle"
+type="checkbox">
+
+</label>
+
+<button
+class="closeModal">
+
+Close
+
+</button>
+
+</div>
+
+</div>
+
+<script src="js/database.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/flashcards.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/dragdrop.js"></script>
+<script src="js/memory.js"></script>
+<script src="js/spelling.js"></script>
+<script src="js/teacher.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+
+if("serviceWorker" in navigator){
+
+window.addEventListener("load",()=>{
+
+navigator.serviceWorker.register("sw.js");
+
+});
+
+}
+
+</script>
+
 </body>
 </html>
