@@ -1,16 +1,652 @@
-/* Simple animations for cards and buttons */
-.card {
-  transition: transform 0.3s ease;
+/* ===========================================
+   KIDS VISUAL DICTIONARY
+   ANIMATIONS
+===========================================*/
+
+/* ---------- Floating Mascot ---------- */
+
+@keyframes float {
+
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-18px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+
 }
 
-.card:hover {
-  transform: scale(1.05);
+/* ---------- Bounce ---------- */
+
+@keyframes bounce {
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    25%{
+        transform:translateY(-12px);
+    }
+
+    50%{
+        transform:translateY(0);
+    }
+
+    75%{
+        transform:translateY(-6px);
+    }
+
 }
 
-button {
-  transition: background-color 0.3s ease;
+/* ---------- Pulse ---------- */
+
+@keyframes pulse {
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.08);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
 }
 
-button:hover {
-  background-color: #45a049;
+/* ---------- Wiggle ---------- */
+
+@keyframes wiggle {
+
+    0%{
+        transform:rotate(0deg);
+    }
+
+    20%{
+        transform:rotate(-5deg);
+    }
+
+    40%{
+        transform:rotate(5deg);
+    }
+
+    60%{
+        transform:rotate(-5deg);
+    }
+
+    80%{
+        transform:rotate(5deg);
+    }
+
+    100%{
+        transform:rotate(0deg);
+    }
+
+}
+
+/* ---------- Shake ---------- */
+
+@keyframes shake {
+
+    0%{
+        transform:translateX(0);
+    }
+
+    20%{
+        transform:translateX(-8px);
+    }
+
+    40%{
+        transform:translateX(8px);
+    }
+
+    60%{
+        transform:translateX(-8px);
+    }
+
+    80%{
+        transform:translateX(8px);
+    }
+
+    100%{
+        transform:translateX(0);
+    }
+
+}
+
+/* ---------- Rotate ---------- */
+
+@keyframes rotateSlow {
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+/* ---------- Pop ---------- */
+
+@keyframes pop {
+
+    0%{
+        transform:scale(0);
+        opacity:0;
+    }
+
+    70%{
+        transform:scale(1.15);
+        opacity:1;
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
+}
+
+/* ---------- Fade In ---------- */
+
+@keyframes fadeIn {
+
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
+
+}
+
+/* ---------- Slide Up ---------- */
+
+@keyframes slideUp {
+
+    from{
+        opacity:0;
+        transform:translateY(40px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* ---------- Flip ---------- */
+
+@keyframes flipCard {
+
+    from{
+
+        transform:rotateY(0);
+
+    }
+
+    to{
+
+        transform:rotateY(180deg);
+
+    }
+
+}
+
+/* ---------- Glow ---------- */
+
+@keyframes glow {
+
+    0%{
+
+        box-shadow:0 0 0 rgba(79,195,247,0);
+
+    }
+
+    50%{
+
+        box-shadow:0 0 35px rgba(79,195,247,.7);
+
+    }
+
+    100%{
+
+        box-shadow:0 0 0 rgba(79,195,247,0);
+
+    }
+
+}
+
+/* ---------- Rainbow ---------- */
+
+@keyframes rainbow {
+
+    0%{
+
+        color:#F44336;
+
+    }
+
+    20%{
+
+        color:#FF9800;
+
+    }
+
+    40%{
+
+        color:#FFEB3B;
+
+    }
+
+    60%{
+
+        color:#4CAF50;
+
+    }
+
+    80%{
+
+        color:#2196F3;
+
+    }
+
+    100%{
+
+        color:#9C27B0;
+
+    }
+
+}
+
+/* ===========================================
+   COMPONENT ANIMATIONS
+===========================================*/
+
+.menuCard{
+
+    animation:slideUp .6s ease;
+
+}
+
+.menuCard:hover{
+
+    transform:translateY(-12px) scale(1.05);
+
+    box-shadow:0 20px 40px rgba(0,0,0,.15);
+
+}
+
+.menuCard:active{
+
+    transform:scale(.95);
+
+}
+
+/* -------------------------- */
+
+.lessonButtons button:hover{
+
+    animation:pulse .6s;
+
+}
+
+/* -------------------------- */
+
+#mascot{
+
+    animation:
+
+        float 3s infinite ease-in-out,
+
+        pulse 4s infinite;
+
+}
+
+/* -------------------------- */
+
+.logo{
+
+    animation:fadeIn 1s;
+
+}
+
+/* -------------------------- */
+
+.backButton:hover{
+
+    animation:wiggle .6s;
+
+}
+
+/* -------------------------- */
+
+.correct{
+
+    animation:glow .8s;
+
+}
+
+/* -------------------------- */
+
+.wrong{
+
+    animation:shake .5s;
+
+}
+
+/* -------------------------- */
+
+.flashcard{
+
+    transition:.6s;
+
+    transform-style:preserve-3d;
+
+}
+
+.flashcard.flip{
+
+    animation:flipCard .6s forwards;
+
+}
+
+/* -------------------------- */
+
+.bigProgress{
+
+    animation:pulse 2.5s infinite;
+
+}
+
+/* -------------------------- */
+
+.navButton:hover{
+
+    animation:bounce .6s;
+
+}
+
+/* -------------------------- */
+
+#toast.show{
+
+    opacity:1;
+
+    animation:pop .4s;
+
+}
+
+/* -------------------------- */
+
+.loaderMascot{
+
+    animation:
+
+        bounce 1.5s infinite,
+
+        rainbow 6s infinite;
+
+}
+
+/* ===========================================
+   STARS
+===========================================*/
+
+.star{
+
+    position:absolute;
+
+    font-size:22px;
+
+    pointer-events:none;
+
+    animation:starFly 1.5s forwards;
+
+}
+
+@keyframes starFly{
+
+    0%{
+
+        opacity:1;
+
+        transform:translateY(0) scale(1);
+
+    }
+
+    100%{
+
+        opacity:0;
+
+        transform:translateY(-180px) scale(2);
+
+    }
+
+}
+
+/* ===========================================
+   CONFETTI
+===========================================*/
+
+.confetti{
+
+    position:fixed;
+
+    width:12px;
+
+    height:12px;
+
+    border-radius:2px;
+
+    pointer-events:none;
+
+    animation:confettiFall 3s linear forwards;
+
+}
+
+@keyframes confettiFall{
+
+    0%{
+
+        opacity:1;
+
+        transform:translateY(-30px) rotate(0deg);
+
+    }
+
+    100%{
+
+        opacity:0;
+
+        transform:translateY(110vh) rotate(720deg);
+
+    }
+
+}
+
+/* ===========================================
+   FLOATING CLOUDS
+===========================================*/
+
+.cloud{
+
+    position:absolute;
+
+    opacity:.15;
+
+    animation:cloudMove 40s linear infinite;
+
+}
+
+@keyframes cloudMove{
+
+    from{
+
+        transform:translateX(-200px);
+
+    }
+
+    to{
+
+        transform:translateX(calc(100vw + 300px));
+
+    }
+
+}
+
+/* ===========================================
+   BALLOONS
+===========================================*/
+
+.balloon{
+
+    position:absolute;
+
+    font-size:48px;
+
+    animation:balloonFloat 12s linear infinite;
+
+}
+
+@keyframes balloonFloat{
+
+    from{
+
+        transform:translateY(120vh);
+
+    }
+
+    to{
+
+        transform:translateY(-150px);
+
+    }
+
+}
+
+/* ===========================================
+   SPARKLES
+===========================================*/
+
+.sparkle{
+
+    position:absolute;
+
+    width:8px;
+
+    height:8px;
+
+    border-radius:50%;
+
+    background:#FFD54F;
+
+    animation:sparkle .9s infinite alternate;
+
+}
+
+@keyframes sparkle{
+
+    from{
+
+        transform:scale(.5);
+
+        opacity:.2;
+
+    }
+
+    to{
+
+        transform:scale(1.6);
+
+        opacity:1;
+
+    }
+
+}
+
+/* ===========================================
+   HOVER EFFECTS
+===========================================*/
+
+.imageBox:hover{
+
+    transform:scale(1.04);
+
+    transition:.4s;
+
+}
+
+.imageBox img:hover{
+
+    animation:wiggle .6s;
+
+}
+
+button{
+
+    transition:
+
+        transform .25s,
+
+        box-shadow .25s,
+
+        background .25s;
+
+}
+
+button:hover{
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+
+/* ===========================================
+   PAGE TRANSITION
+===========================================*/
+
+.page{
+
+    animation:fadeIn .5s ease;
+
+}
+
+/* ===========================================
+   SUCCESS BADGE
+===========================================*/
+
+.badge-earned{
+
+    animation:
+
+        pop .5s,
+
+        glow 1s;
+
+}
+
+/* ===========================================
+   WORD APPEAR
+===========================================*/
+
+#lessonWord{
+
+    animation:slideUp .5s;
+
+}
+
+#lessonSentence{
+
+    animation:fadeIn .8s;
+
 }
