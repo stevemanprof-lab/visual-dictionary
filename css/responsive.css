@@ -1,20 +1,387 @@
-/* Responsive design for mobile and tablets */
-@media (max-width: 768px) {
-  header h1 {
-    font-size: 1.5rem;
-  }
+/* ======================================================
+   RESPONSIVE STYLES
+   Kids Visual Dictionary
+======================================================*/
 
-  section {
-    margin-bottom: 1rem;
-  }
+/* Large Desktop */
+
+@media (min-width:1400px){
+
+main{
+
+    max-width:1500px;
+
+    margin:auto;
+
 }
 
-@media (max-width: 480px) {
-  body {
-    font-size: 14px;
-  }
+.menuGrid{
 
-  header {
-    padding: 0.5rem;
-  }
+    grid-template-columns:repeat(4,1fr);
+
+}
+
+}
+
+/* ---------------------------------------------------- */
+/* Laptop */
+
+@media (max-width:1200px){
+
+.menuGrid{
+
+    grid-template-columns:repeat(3,1fr);
+
+}
+
+.imageBox{
+
+    width:280px;
+    height:280px;
+
+}
+
+}
+
+/* ---------------------------------------------------- */
+/* Tablet */
+
+@media (max-width:992px){
+
+header{
+
+    flex-direction:column;
+    height:auto;
+    padding:15px;
+
+}
+
+.logo{
+
+    margin-bottom:10px;
+
+}
+
+.menuGrid{
+
+    grid-template-columns:repeat(2,1fr);
+
+}
+
+.lessonButtons{
+
+    flex-direction:column;
+
+}
+
+.lessonButtons button{
+
+    width:100%;
+
+}
+
+#statistics{
+
+    grid-template-columns:1fr;
+
+}
+
+.imageBox{
+
+    width:250px;
+    height:250px;
+
+}
+
+#lessonWord{
+
+    font-size:2rem;
+
+}
+
+.hero h2{
+
+    font-size:2rem;
+
+}
+
+}
+
+/* ---------------------------------------------------- */
+/* Phone */
+
+@media (max-width:768px){
+
+.page{
+
+    padding:15px;
+
+}
+
+.toolbar{
+
+    flex-direction:column;
+
+}
+
+.toolbar input,
+.toolbar select{
+
+    width:100%;
+
+}
+
+.menuGrid{
+
+    grid-template-columns:1fr;
+
+}
+
+.menuCard{
+
+    padding:25px;
+
+}
+
+.imageBox{
+
+    width:220px;
+    height:220px;
+
+}
+
+#lessonWord{
+
+    font-size:1.8rem;
+
+}
+
+#lessonSentence{
+
+    font-size:1rem;
+
+}
+
+.logo h1{
+
+    font-size:1.2rem;
+
+}
+
+#mascot{
+
+    font-size:5rem;
+
+}
+
+.bigProgress{
+
+    transform:scale(.9);
+
+}
+
+}
+
+/* ---------------------------------------------------- */
+/* Small phones */
+
+@media (max-width:480px){
+
+header{
+
+    padding:10px;
+
+}
+
+.topButtons button{
+
+    width:42px;
+    height:42px;
+
+}
+
+.logo{
+
+    font-size:1.4rem;
+
+}
+
+.hero{
+
+    margin-top:10px;
+
+}
+
+.hero h2{
+
+    font-size:1.6rem;
+
+}
+
+.hero p{
+
+    font-size:.95rem;
+
+}
+
+.imageBox{
+
+    width:180px;
+    height:180px;
+
+}
+
+.imageBox img{
+
+    max-height:160px;
+
+}
+
+.lessonButtons button{
+
+    padding:12px;
+
+    font-size:.95rem;
+
+}
+
+.backButton{
+
+    width:100%;
+
+}
+
+.progressCard{
+
+    padding:20px;
+
+}
+
+#progressCircle{
+
+    width:140px;
+    height:140px;
+
+    font-size:1.5rem;
+
+}
+
+footer{
+
+    height:80px;
+
+}
+
+.navButton{
+
+    font-size:.85rem;
+
+}
+
+.modalContent{
+
+    padding:20px;
+
+}
+
+}
+
+/* ---------------------------------------------------- */
+/* Landscape phones */
+
+@media (max-height:500px){
+
+header{
+
+    position:relative;
+
+}
+
+.hero{
+
+    margin-top:5px;
+
+}
+
+#mascot{
+
+    font-size:4rem;
+
+}
+
+footer{
+
+    position:relative;
+
+}
+
+}
+
+/* ---------------------------------------------------- */
+/* Touch devices */
+
+@media (hover:none){
+
+button:hover{
+
+    transform:none;
+
+}
+
+.menuCard:hover{
+
+    transform:none;
+
+}
+
+.imageBox:hover{
+
+    transform:none;
+
+}
+
+}
+
+/* ---------------------------------------------------- */
+/* High-resolution displays */
+
+@media (-webkit-min-device-pixel-ratio:2),
+(min-resolution:192dpi){
+
+body{
+
+    text-rendering:optimizeLegibility;
+
+}
+
+}
+
+/* ---------------------------------------------------- */
+/* Print */
+
+@media print{
+
+header,
+footer,
+.toolbar,
+.lessonButtons,
+.topButtons,
+.modal{
+
+    display:none !important;
+
+}
+
+body{
+
+    background:white;
+
+}
+
+.page{
+
+    display:block !important;
+
+}
+
 }
