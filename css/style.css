@@ -1,22 +1,766 @@
-/* General layout and theme */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background: #f9f9f9;
-  color: #333;
+/* =====================================================
+   KIDS VISUAL DICTIONARY
+   MAIN STYLESHEET
+===================================================== */
+
+:root{
+
+    --primary:#4FC3F7;
+    --secondary:#FFB300;
+    --accent:#66BB6A;
+    --danger:#EF5350;
+    --purple:#AB47BC;
+
+    --background:#ffffff;
+
+    --card:#ffffff;
+
+    --text:#333333;
+
+    --shadow:0 10px 30px rgba(0,0,0,.12);
+
+    --radius:25px;
+
+    --transition:.30s ease;
+
+    --footerHeight:90px;
+
 }
 
-header {
-  background: #4CAF50;
-  color: white;
-  padding: 1rem;
-  text-align: center;
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
 }
 
-main {
-  padding: 1rem;
+html{
+
+    scroll-behavior:smooth;
+
 }
 
-section {
-  margin-bottom: 2rem;
+body{
+
+    background:var(--background);
+
+    font-family:'Fredoka',sans-serif;
+
+    color:var(--text);
+
+    overflow-x:hidden;
+
+    min-height:100vh;
+
+    padding-bottom:var(--footerHeight);
+
+}
+
+/* ---------------------- */
+
+img{
+
+    max-width:100%;
+
+    display:block;
+
+}
+
+/* ---------------------- */
+
+button{
+
+    cursor:pointer;
+
+    border:none;
+
+    outline:none;
+
+    transition:var(--transition);
+
+    font-family:inherit;
+
+}
+
+button:hover{
+
+    transform:translateY(-4px);
+
+}
+
+button:active{
+
+    transform:scale(.95);
+
+}
+
+/* ---------------------- */
+
+.page{
+
+    display:none;
+
+    animation:fade .4s;
+
+    padding:25px;
+
+}
+
+.page.active{
+
+    display:block;
+
+}
+
+/* ---------------------- */
+
+header{
+
+    height:80px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 25px;
+
+    background:white;
+
+    box-shadow:0 3px 15px rgba(0,0,0,.08);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+}
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+.logo h1{
+
+    font-size:1.5rem;
+
+    color:var(--primary);
+
+}
+
+.logo{
+
+    font-size:2rem;
+
+}
+
+.topButtons{
+
+    display:flex;
+
+    gap:12px;
+
+}
+
+.topButtons button{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    background:var(--primary);
+
+    color:white;
+
+    font-size:1.2rem;
+
+}
+
+/* ---------------------- */
+
+.hero{
+
+    text-align:center;
+
+    margin-top:30px;
+
+}
+
+#mascot{
+
+    font-size:7rem;
+
+    animation:float 3s infinite ease-in-out;
+
+}
+
+.hero h2{
+
+    font-size:2.3rem;
+
+    margin-top:15px;
+
+}
+
+.hero p{
+
+    margin-top:10px;
+
+    color:#777;
+
+}
+
+/* ---------------------- */
+
+.menuGrid{
+
+    margin-top:40px;
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+
+    gap:25px;
+
+}
+
+.menuCard{
+
+    background:white;
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+    padding:35px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:15px;
+
+    font-size:1.4rem;
+
+}
+
+.menuCard span{
+
+    font-weight:600;
+
+}
+
+.menuCard:nth-child(1){
+
+    border-top:8px solid var(--primary);
+
+}
+
+.menuCard:nth-child(2){
+
+    border-top:8px solid var(--secondary);
+
+}
+
+.menuCard:nth-child(3){
+
+    border-top:8px solid var(--accent);
+
+}
+
+.menuCard:nth-child(4){
+
+    border-top:8px solid var(--danger);
+
+}
+
+.menuCard:nth-child(5){
+
+    border-top:8px solid var(--purple);
+
+}
+
+/* ---------------------- */
+
+.toolbar{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+    margin-bottom:25px;
+
+}
+
+.toolbar input,
+
+.toolbar select{
+
+    padding:15px;
+
+    border-radius:15px;
+
+    border:2px solid #ddd;
+
+    font-size:1rem;
+
+}
+
+/* ---------------------- */
+
+.backButton{
+
+    background:var(--primary);
+
+    color:white;
+
+    padding:15px 30px;
+
+    border-radius:15px;
+
+    margin-bottom:25px;
+
+}
+
+/* ---------------------- */
+
+#lessonCard{
+
+    max-width:700px;
+
+    margin:auto;
+
+    background:white;
+
+    border-radius:30px;
+
+    box-shadow:var(--shadow);
+
+    padding:30px;
+
+    text-align:center;
+
+}
+
+.imageBox{
+
+    width:320px;
+
+    height:320px;
+
+    margin:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:30px;
+
+    background:#f7f7f7;
+
+}
+
+.imageBox img{
+
+    max-height:280px;
+
+}
+
+#lessonWord{
+
+    margin-top:25px;
+
+    font-size:2.4rem;
+
+}
+
+#lessonSentence{
+
+    margin-top:15px;
+
+    font-size:1.2rem;
+
+    color:#666;
+
+}
+
+.lessonButtons{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+    margin-top:30px;
+
+}
+
+.lessonButtons button{
+
+    background:var(--primary);
+
+    color:white;
+
+    padding:15px 30px;
+
+    border-radius:18px;
+
+    font-size:1rem;
+
+}
+
+/* ---------------------- */
+
+#flashcardContainer,
+
+#quizContainer,
+
+#dragContainer,
+
+#memoryContainer,
+
+#spellingContainer{
+
+    min-height:500px;
+
+    border-radius:25px;
+
+    background:white;
+
+    box-shadow:var(--shadow);
+
+    padding:30px;
+
+}
+
+/* ---------------------- */
+
+.progressCard{
+
+    max-width:700px;
+
+    margin:auto;
+
+    background:white;
+
+    border-radius:30px;
+
+    box-shadow:var(--shadow);
+
+    text-align:center;
+
+    padding:35px;
+
+}
+
+.bigProgress{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin:40px 0;
+
+}
+
+#progressCircle{
+
+    width:180px;
+
+    height:180px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,var(--primary),var(--accent));
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:white;
+
+    font-size:2rem;
+
+    font-weight:bold;
+
+}
+
+#statistics{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:20px;
+
+}
+
+#statistics div{
+
+    background:#fafafa;
+
+    border-radius:20px;
+
+    padding:20px;
+
+    font-size:1.3rem;
+
+}
+
+/* ---------------------- */
+
+footer{
+
+    position:fixed;
+
+    bottom:0;
+
+    left:0;
+
+    width:100%;
+
+    height:var(--footerHeight);
+
+    background:white;
+
+    box-shadow:0 -5px 20px rgba(0,0,0,.08);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+footer nav{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:space-evenly;
+
+}
+
+.navButton{
+
+    background:none;
+
+    font-size:1rem;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:5px;
+
+}
+
+/* ---------------------- */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:9999;
+
+}
+
+.modalContent{
+
+    width:min(450px,92%);
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:35px;
+
+}
+
+.modalContent h2{
+
+    margin-bottom:25px;
+
+}
+
+.modalContent input,
+
+.modalContent select{
+
+    width:100%;
+
+    margin-top:15px;
+
+    margin-bottom:25px;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    border:2px solid #ddd;
+
+}
+
+.modalContent button{
+
+    width:100%;
+
+    margin-top:10px;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    background:var(--primary);
+
+    color:white;
+
+}
+
+/* ---------------------- */
+
+#toast{
+
+    position:fixed;
+
+    bottom:120px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    background:#333;
+
+    color:white;
+
+    padding:15px 30px;
+
+    border-radius:30px;
+
+    opacity:0;
+
+    pointer-events:none;
+
+}
+
+/* ---------------------- */
+
+#loadingScreen{
+
+    position:fixed;
+
+    inset:0;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:10000;
+
+}
+
+.loader{
+
+    width:350px;
+
+    text-align:center;
+
+}
+
+.loaderMascot{
+
+    font-size:5rem;
+
+    animation:bounce 1.5s infinite;
+
+}
+
+.loadingBar{
+
+    margin-top:20px;
+
+    width:100%;
+
+    height:18px;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    background:#ddd;
+
+}
+
+#loadingFill{
+
+    width:0%;
+
+    height:100%;
+
+    background:linear-gradient(90deg,#4FC3F7,#66BB6A);
+
+}
+
+/* ---------------------- */
+
+@keyframes fade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
 }
