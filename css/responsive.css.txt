@@ -1,0 +1,20 @@
+/* Responsive design for mobile and tablets */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  section {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+
+  header {
+    padding: 0.5rem;
+  }
+}

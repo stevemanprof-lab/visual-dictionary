@@ -1,0 +1,17 @@
+{
+  "animals": [
+    { "word": "cat", "image": "assets/animals/cat.png" },
+    { "word": "dog", "image": "assets/animals/dog.png" },
+    { "word": "lion", "image": "assets/animals/lion.png" }
+  ],
+  "food": [
+    { "word": "apple", "image": "assets/food/apple.png" },
+    { "word": "bread", "image": "assets/food/bread.png" },
+    { "word": "rice", "image": "assets/food/rice.png" }
+  ],
+  "school": [
+    { "word": "book", "image": "assets/school/book.png" },
+    { "word": "pen", "image": "assets/school/pen.png" },
+    { "word": "teacher", "image": "assets/school/teacher.png" }
+  ]
+}

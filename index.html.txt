@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Visual Dictionary</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/games.css">
+</head>
+<body>
+  <header>
+    <h1>Visual Dictionary</h1>
+  </header>
+
+  <main>
+    <section id="learn"></section>
+    <section id="flashcards"></section>
+    <section id="quiz"></section>
+    <section id="progress-container"></section>
+  </main>
+
+  <script src="js/utils.js"></script>
+  <script src="js/database.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/flashcards.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/progress.js"></script>
+</body>
+</html>
