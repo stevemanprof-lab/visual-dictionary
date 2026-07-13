@@ -1,0 +1,143 @@
+/*
+=========================================================
+TEACHER AREA
+Accès protégé par mot de passe pour administrer les mots
+=========================================================
+*/
+
+"use strict";
+
+const Teacher = {
+
+    password: 'teacher123', // Mot de passe simple
+    isLoggedIn: false,
+
+    init() {
+        const modal = document.getElementById('teacherModal');
+        const loginBtn = document.getElementById('teacherLogin');
+        const passInput = document.getElementById('teacherPassword');
+        const closeBtns = document.querySelectorAll('.closeModal');
+
+        // Ouvrir la modale
+        document.getElementById('teacherBtn').addEventListener('click', () => {
+            modal.style.display = 'flex';
+            passInput.value = '';
+            passInput.focus();
+        });
+
+        // Connexion
+        loginBtn.addEventListener('click', () => {
+            this.login(passInput.value);
+        });
+        passInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') this.login(passInput.value);
+        });
+
+        // Fermeture
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+        });
+        // Cliquer en dehors
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.style.display = 'none';
+        });
+
+        // Une fois connecté, afficher les options admin
+        this.loadAdminPanel();
+    },
+
+    login(password) {
+        if (password === this.password) {
+            this.isLoggedIn = true;
+            Utils.showToast('✅ Connexion réussie !');
+            document.getElementById('teacherModal').style.display = 'none';
+            this.showAdminPanel();
+        } else {
+            Utils.showToast('❌ Mot de passe incorrect');
+            Utils.errorSound();
+        }
+    },
+
+    showAdminPanel() {
+        // Créer un panneau d'administration dans la page ou dans la modale ?
+        // On peut le faire apparaître en bas de la page d'accueil
+        let panel = document.getElementById('adminPanel');
+        if (!panel) {
+            panel = document.createElement('div');
+            panel.id = 'adminPanel';
+            panel.style.cssText = `
+                max-width:700px; margin:30px auto; background:white;
+                border-radius:25px; padding:25px; box-shadow:0 10px 30px rgba(0,0,0,0.1);
+            `;
+            document.getElementById('homePage').appendChild(panel);
+        }
+        panel.innerHTML = `
+            <h3>📝 Administration</h3>
+            <div style="display:grid;gap:10px;margin-top:15px;">
+                <input id="adminWord" placeholder="Mot anglais" style="padding:12px;border-radius:15px;border:2px solid #ddd;">
+                <input id="adminImage" placeholder="URL image" style="padding:12px;border-radius:15px;border:2px solid #ddd;">
+                <input id="adminAudio" placeholder="URL audio" style="padding:12px;border-radius:15px;border:2px solid #ddd;">
+                <button id="adminAddBtn" style="padding:12px;background:#4FC3F7;color:white;border-radius:15px;">➕ Ajouter</button>
+                <button id="adminResetProgress" style="padding:12px;background:#EF5350;color:white;border-radius:15px;">🔄 Réinitialiser la progression</button>
+            </div>
+            <ul id="adminWordList" style="margin-top:15px;list-style:none;padding:0;max-height:200px;overflow-y:auto;"></ul>
+            <div style="font-size:0.8rem;color:#999;margin-top:10px;">(Les mots ajoutés sont sauvegardés dans localStorage)</div>
+        `;
+
+        document.getElementById('adminAddBtn').onclick = () => {
+            const w = document.getElementById('adminWord').value.trim();
+            const img = document.getElementById('adminImage').value.trim();
+            const aud = document.getElementById('adminAudio').value.trim();
+            if (w && img && aud) {
+                Database.words.push({
+                    id: Database.words.length + 1,
+                    category: 'custom',
+                    word: w,
+                    sentence: `This is a ${w}.`,
+                    image: img,
+                    audio: aud
+                });
+                localStorage.setItem('vocab', JSON.stringify(Database.words));
+                this.updateWordList();
+                Utils.showToast(`✅ ${w} ajouté !`);
+                document.getElementById('adminWord').value = '';
+                document.getElementById('adminImage').value = '';
+                document.getElementById('adminAudio').value = '';
+                // Mettre à jour la progression globale
+                if (typeof Progress !== 'undefined') Progress.updateUI();
+            } else {
+                Utils.showToast('⚠️ Remplis tous les champs');
+            }
+        };
+
+        document.getElementById('adminResetProgress').onclick = () => {
+            if (confirm('Réinitialiser toute la progression ?')) {
+                if (typeof Progress !== 'undefined') Progress.reset();
+                Utils.showToast('Progression réinitialisée');
+            }
+        };
+
+        this.updateWordList();
+    },
+
+    updateWordList() {
+        const list = document.getElementById('adminWordList');
+        if (!list) return;
+        list.innerHTML = '';
+        Database.words.forEach(w => {
+            const li = document.createElement('li');
+            li.style.cssText = 'padding:6px 10px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;';
+            li.innerHTML = `<span>${w.word}</span><span style="color:#999;">${w.category || ''}</span>`;
+            list.appendChild(li);
+        });
+    }
+};
+
+// Initialiser au chargement
+document.addEventListener('DOMContentLoaded', () => {
+    Teacher.init();
+});
+
+window.Teacher = Teacher;
