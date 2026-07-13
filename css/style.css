@@ -1,6 +1,8 @@
 /* =====================================================
    KIDS VISUAL DICTIONARY
    MAIN STYLESHEET
+   Version 1.1 - FIXED: duplicate .logo rule merged,
+   dark mode styles added (toggle existed, CSS didn't)
 ===================================================== */
 
 :root{
@@ -56,6 +58,8 @@ body{
     min-height:100vh;
 
     padding-bottom:var(--footerHeight);
+
+    transition:background .3s,color .3s;
 
 }
 
@@ -149,6 +153,8 @@ header{
 
     gap:15px;
 
+    font-size:2rem;
+
 }
 
 .logo h1{
@@ -156,12 +162,6 @@ header{
     font-size:1.5rem;
 
     color:var(--primary);
-
-}
-
-.logo{
-
-    font-size:2rem;
 
 }
 
@@ -655,6 +655,16 @@ footer nav{
 
 }
 
+.modalContent label{
+
+    display:block;
+
+    margin-top:15px;
+
+    font-weight:600;
+
+}
+
 /* ---------------------- */
 
 #toast{
@@ -762,5 +772,83 @@ footer nav{
         transform:translateY(0);
 
     }
+
+}
+
+/* =====================================================
+   DARK MODE
+   FIXED: #darkToggle existed in the settings modal but
+   there was no CSS behind it at all, so toggling it had
+   zero visual effect. audio.js now adds/removes body.dark.
+===================================================== */
+
+body.dark{
+
+    --background:#121417;
+
+    --card:#1e2126;
+
+    --text:#eaeaea;
+
+    background:var(--background);
+
+    color:var(--text);
+
+}
+
+body.dark header,
+body.dark .menuCard,
+body.dark #lessonCard,
+body.dark #flashcardContainer,
+body.dark #quizContainer,
+body.dark #dragContainer,
+body.dark #memoryContainer,
+body.dark #spellingContainer,
+body.dark .progressCard,
+body.dark .modalContent,
+body.dark footer,
+body.dark .score-box,
+body.dark .quiz-question,
+body.dark .flash-front,
+body.dark .memory-card,
+body.dark .drop-zone{
+
+    background:var(--card);
+
+    color:var(--text);
+
+}
+
+body.dark .imageBox,
+body.dark #statistics div{
+
+    background:#2a2d33;
+
+}
+
+body.dark .flash-back{
+
+    background:#2a2314;
+
+}
+
+body.dark .lessonSentence,
+body.dark #lessonSentence{
+
+    color:#bbb;
+
+}
+
+body.dark .toolbar input,
+body.dark .toolbar select,
+body.dark .modalContent input,
+body.dark .modalContent select,
+body.dark .spelling-input{
+
+    background:#1e2126;
+
+    color:var(--text);
+
+    border-color:#3a3d42;
 
 }
