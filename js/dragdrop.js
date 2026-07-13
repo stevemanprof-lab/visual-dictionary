@@ -1,7 +1,9 @@
 /*
 =========================================================
 DRAG & DROP GAME
-Glisser le mot sous l'image correspondante
+Kids Visual Dictionary
+NEW FILE - #dragContainer existed in index.html but no
+script ever populated it, so this page was blank.
 =========================================================
 */
 
@@ -9,236 +11,186 @@ Glisser le mot sous l'image correspondante
 
 const DragDrop = {
 
-    words: [],
-    pairs: [],
-    dragItem: null,
-    clone: null,
-    offsetX: 0,
-    offsetY: 0,
+    round: [],
 
-    init() {
-        const container = document.getElementById('dragContainer');
-        if (!container) return;
+    score: 0,
+
+    total: 0,
+
+    matched: 0,
+
+    init(){
+
         this.words = [...Database.words];
-        this.render(container);
+
+        this.score = 0;
+
+        this.total = 0;
+
+        this.nextRound();
+
     },
 
-    render(container) {
-        // Sélectionner 4 mots aléatoires
-        const selected = Utils.shuffle(this.words).slice(0, 4);
-        this.pairs = selected.map(w => ({ word: w.word, image: w.image, id: w.id }));
+    nextRound(){
 
-        // Mélanger les mots et les images séparément
-        const wordItems = Utils.shuffle([...this.pairs]);
-        const imageItems = Utils.shuffle([...this.pairs]);
+        this.total++;
+
+        this.round = Utils.shuffle(this.words).slice(0,4);
+
+        this.matched = 0;
+
+        this.render();
+
+    },
+
+    render(){
+
+        const container = document.getElementById("dragContainer");
+
+        if(!container) return;
+
+        const zones = this.round.map(w => `
+            <div class="drop-zone" data-word="${w.word}">
+                <img src="${w.image}" alt="${w.word}"
+                    style="width:70px;height:70px;object-fit:contain;pointer-events:none;">
+            </div>
+        `).join("");
+
+        const chips = Utils.shuffle(this.round).map(w => `
+            <div class="draggable" draggable="true" data-word="${w.word}">
+                ${w.word}
+            </div>
+        `).join("");
 
         container.innerHTML = `
-            <div class="game-toolbar">
-                <button id="dragReset">🔄 Nouveau</button>
-                <button id="dragSpeak">🔊 Écouter</button>
-            </div>
-            <div class="drag-zone" id="dragZone">
-                <div class="drag-items" id="dragItems"></div>
-                <div class="drop-zones" id="dropZones"></div>
-            </div>
-            <div id="dragFeedback" style="text-align:center;font-size:1.5rem;margin-top:15px;"></div>
+        <div class="score-panel">
+            <div class="score-box"><h3>Matched</h3><h2 id="dragScore">0 / ${this.round.length}</h2></div>
+            <div class="score-box"><h3>Round</h3><h2 id="dragCount">${this.total}</h2></div>
+        </div>
+        <h2 class="quiz-title">Drag each word to its picture</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:20px;margin:25px 0;">
+            ${zones}
+        </div>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;">
+            ${chips}
+        </div>
         `;
 
-        const itemsArea = document.getElementById('dragItems');
-        const dropsArea = document.getElementById('dropZones');
+        this.bind();
 
-        // Créer les mots draggables
-        wordItems.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'draggable';
-            div.textContent = item.word;
-            div.dataset.word = item.word;
-            div.draggable = true;
-            div.addEventListener('dragstart', this.onDragStart.bind(this));
-            div.addEventListener('touchstart', this.onTouchStart.bind(this), { passive: false });
-            itemsArea.appendChild(div);
-        });
-
-        // Créer les zones de dépôt (images)
-        imageItems.forEach(item => {
-            const dz = document.createElement('div');
-            dz.className = 'drop-zone';
-            dz.dataset.word = item.word;
-            dz.innerHTML = `<img src="${item.image}" alt="${item.word}" style="width:100px;height:100px;object-fit:contain;">`;
-            dz.addEventListener('dragover', e => e.preventDefault());
-            dz.addEventListener('drop', this.onDrop.bind(this));
-            dz.addEventListener('touchmove', e => e.preventDefault());
-            dz.addEventListener('touchend', this.onTouchEnd.bind(this));
-            dropsArea.appendChild(dz);
-        });
-
-        // Bouton reset
-        document.getElementById('dragReset').onclick = () => this.init();
-        document.getElementById('dragSpeak').onclick = () => {
-            const feedback = document.getElementById('dragFeedback');
-            Utils.speak('Glisse chaque mot sous la bonne image', 'fr-FR');
-        };
-
-        // Nettoyer les événements globaux (au cas où)
-        document.removeEventListener('mousemove', this.onDragMove);
-        document.removeEventListener('mouseup', this.onDragEnd);
-        document.removeEventListener('touchmove', this.onTouchMove);
-        document.removeEventListener('touchend', this.onTouchEnd);
     },
 
-    onDragStart(e) {
-        this.dragItem = e.target;
-        e.dataTransfer.setData('text', this.dragItem.dataset.word);
-        this.dragItem.style.opacity = '0.5';
+    bind(){
+
+        const chips = document.querySelectorAll("#dragContainer .draggable");
+
+        const zones = document.querySelectorAll("#dragContainer .drop-zone");
+
+        chips.forEach(chip=>{
+
+            chip.addEventListener("dragstart", e=>{
+
+                e.dataTransfer.setData("text/plain", chip.dataset.word);
+
+            });
+
+            /* touch/mobile fallback: tap chip, then tap zone */
+            chip.addEventListener("click", ()=>{
+
+                document.querySelectorAll("#dragContainer .draggable")
+                    .forEach(c=>c.classList.remove("selected-chip"));
+
+                chip.classList.add("selected-chip");
+
+                chip.style.outline = "3px solid var(--primary)";
+
+            });
+
+        });
+
+        zones.forEach(zone=>{
+
+            zone.addEventListener("dragover", e=>{
+
+                e.preventDefault();
+
+            });
+
+            zone.addEventListener("drop", e=>{
+
+                e.preventDefault();
+
+                const word = e.dataTransfer.getData("text/plain");
+
+                this.tryMatch(word, zone);
+
+            });
+
+            zone.addEventListener("click", ()=>{
+
+                const selected = document.querySelector("#dragContainer .draggable.selected-chip");
+
+                if(selected){
+
+                    this.tryMatch(selected.dataset.word, zone);
+
+                }
+
+            });
+
+        });
+
     },
 
-    onDrop(e) {
-        e.preventDefault();
-        const word = e.dataTransfer.getData('text');
-        const dropZone = e.target.closest('.drop-zone');
-        if (!dropZone) return;
-        const expectedWord = dropZone.dataset.word;
-        const feedback = document.getElementById('dragFeedback');
+    tryMatch(word, zone){
 
-        if (word === expectedWord) {
-            dropZone.style.borderColor = '#4CAF50';
-            dropZone.style.background = '#C8E6C9';
-            dropZone.querySelector('img')?.style.setProperty('border', '4px solid #4CAF50');
-            // Désactiver l'élément dragué
-            const draggedEl = document.querySelector(`.draggable[data-word="${word}"]`);
-            if (draggedEl) draggedEl.style.display = 'none';
-            feedback.textContent = '✅ Bon !';
-            Utils.speak('Good!', 'en-US');
-            Progress.markWordLearned(this.pairs.find(p => p.word === word)?.id);
-            this.checkComplete();
-        } else {
-            dropZone.style.borderColor = '#EF5350';
-            dropZone.style.background = '#FFCDD2';
-            feedback.textContent = '❌ Essaie encore';
-            Utils.errorSound();
-            setTimeout(() => {
-                dropZone.style.borderColor = '';
-                dropZone.style.background = '';
-            }, 600);
+        if(zone.dataset.word !== word || zone.classList.contains("correct-answer")) return;
+
+        const chip = document.querySelector(`#dragContainer .draggable[data-word="${word}"]`);
+
+        zone.classList.add("correct-answer");
+
+        zone.innerHTML += `<div style="font-weight:bold;margin-top:6px;">${word}</div>`;
+
+        if(chip) chip.remove();
+
+        this.matched++;
+
+        Utils.success();
+
+        document.getElementById("dragScore").textContent =
+            `${this.matched} / ${this.round.length}`;
+
+        if(this.matched === this.round.length){
+
+            let learned = Utils.load("learned", []);
+
+            this.round.forEach(w=>{
+
+                if(!learned.includes(w.id)) learned.push(w.id);
+
+            });
+
+            Utils.save("learned", learned);
+
+            App.updateProgress();
+
+            Utils.showToast("Great job!");
+
+            setTimeout(()=>this.nextRound(), 1500);
+
         }
-        // Restaurer opacité
-        const draggables = document.querySelectorAll('.draggable');
-        draggables.forEach(el => el.style.opacity = '1');
-    },
 
-    checkComplete() {
-        const allZones = document.querySelectorAll('.drop-zone');
-        let complete = true;
-        allZones.forEach(z => {
-            if (!z.style.borderColor || z.style.borderColor !== 'rgb(76, 175, 80)') complete = false;
-        });
-        if (complete) {
-            const feedback = document.getElementById('dragFeedback');
-            feedback.textContent = '🎉 Tous les mots sont bien placés !';
-            Utils.createConfetti();
-            Utils.speak('Bravo !', 'fr-FR');
-            setTimeout(() => this.init(), 3000);
-        }
-    },
-
-    // --- Support tactile ---
-    onTouchStart(e) {
-        const touch = e.touches[0];
-        const target = e.currentTarget;
-        this.dragItem = target;
-        this.offsetX = touch.clientX - target.getBoundingClientRect().left;
-        this.offsetY = touch.clientY - target.getBoundingClientRect().top;
-        // Créer un clone flottant
-        this.clone = target.cloneNode(true);
-        this.clone.style.position = 'fixed';
-        this.clone.style.pointerEvents = 'none';
-        this.clone.style.zIndex = 1000;
-        this.clone.style.width = target.offsetWidth + 'px';
-        this.clone.style.opacity = '0.7';
-        this.clone.style.transform = 'scale(1.1)';
-        document.body.appendChild(this.clone);
-        this.moveClone(touch.clientX, touch.clientY);
-        target.style.opacity = '0.3';
-        document.addEventListener('touchmove', this.onTouchMove.bind(this), { passive: false });
-        document.addEventListener('touchend', this.onTouchEnd.bind(this), { passive: false });
-    },
-
-    onTouchMove(e) {
-        e.preventDefault();
-        const touch = e.touches[0];
-        this.moveClone(touch.clientX, touch.clientY);
-        // Survoler les zones
-        const dropZones = document.querySelectorAll('.drop-zone');
-        dropZones.forEach(dz => {
-            const rect = dz.getBoundingClientRect();
-            if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
-                touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
-                dz.style.borderColor = '#4FC3F7';
-                dz.style.background = '#E3F2FD';
-            } else {
-                dz.style.borderColor = '';
-                dz.style.background = '';
-            }
-        });
-    },
-
-    onTouchEnd(e) {
-        const touch = e.changedTouches[0];
-        if (this.clone) { this.clone.remove(); this.clone = null; }
-        if (this.dragItem) this.dragItem.style.opacity = '1';
-        // Trouver la zone de dépôt sous le doigt
-        const dropZones = document.querySelectorAll('.drop-zone');
-        let targetZone = null;
-        dropZones.forEach(dz => {
-            const rect = dz.getBoundingClientRect();
-            if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
-                touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
-                targetZone = dz;
-            }
-            dz.style.borderColor = '';
-            dz.style.background = '';
-        });
-        if (targetZone && this.dragItem) {
-            const word = this.dragItem.dataset.word;
-            const expected = targetZone.dataset.word;
-            const feedback = document.getElementById('dragFeedback');
-            if (word === expected) {
-                targetZone.style.borderColor = '#4CAF50';
-                targetZone.style.background = '#C8E6C9';
-                targetZone.querySelector('img')?.style.setProperty('border', '4px solid #4CAF50');
-                this.dragItem.style.display = 'none';
-                feedback.textContent = '✅ Bon !';
-                Utils.speak('Good!', 'en-US');
-                Progress.markWordLearned(this.pairs.find(p => p.word === word)?.id);
-                this.checkComplete();
-            } else {
-                targetZone.style.borderColor = '#EF5350';
-                targetZone.style.background = '#FFCDD2';
-                feedback.textContent = '❌ Essaie encore';
-                Utils.errorSound();
-                setTimeout(() => {
-                    targetZone.style.borderColor = '';
-                    targetZone.style.background = '';
-                }, 600);
-            }
-        }
-        document.removeEventListener('touchmove', this.onTouchMove);
-        document.removeEventListener('touchend', this.onTouchEnd);
-        this.dragItem = null;
-    },
-
-    moveClone(x, y) {
-        if (!this.clone) return;
-        this.clone.style.left = (x - this.offsetX) + 'px';
-        this.clone.style.top = (y - this.offsetY) + 'px';
     }
+
 };
 
-// Initialisation automatique lors du clic sur le menu
-document.addEventListener('click', e => {
-    if (e.target.dataset.page === 'dragPage') {
-        setTimeout(() => DragDrop.init(), 150);
-    }
-});
+document.addEventListener("click", e=>{
 
-window.DragDrop = DragDrop;
+    if(e.target.dataset.page === "dragPage"){
+
+        setTimeout(()=>DragDrop.init(), 100);
+
+    }
+
+});
