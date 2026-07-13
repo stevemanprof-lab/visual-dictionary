@@ -37,593 +37,202 @@ href="css/responsive.css">
 
 <body>
 
+<!-- ===== LOADING SCREEN ===== -->
 <div id="loadingScreen">
-
-<div class="loader">
-
-<div class="loaderMascot">
-
-🐼
-
+  <div class="loader">
+    <div class="loaderMascot">🐼</div>
+    <h1>Loading...</h1>
+    <div class="loadingBar">
+      <div id="loadingFill"></div>
+    </div>
+  </div>
 </div>
 
-<h1>
+<!-- ===== FORCE HIDE LOADING AFTER 1.5s ===== -->
+<script>
+  (function() {
+    // Force hide loading screen after 1.5 seconds, independent of other scripts
+    setTimeout(function() {
+      var loading = document.getElementById('loadingScreen');
+      if (loading) loading.style.display = 'none';
+    }, 1500);
+  })();
+</script>
 
-Loading...
-
-</h1>
-
-<div class="loadingBar">
-
-<div id="loadingFill"></div>
-
-</div>
-
-</div>
-
-</div>
-
+<!-- ===== HEADER ===== -->
 <header>
 
 <div class="logo">
-
 📚
-
 <h1>
-
 Visual Dictionary
-
 </h1>
-
 </div>
 
 <div class="topButtons">
-
 <button id="teacherBtn">
-
 👨‍🏫
-
 </button>
-
 <button id="settingsBtn">
-
 ⚙
-
 </button>
-
 </div>
 
 </header>
 
+<!-- ===== MAIN CONTENT ===== -->
 <main>
 
-<section id="homePage"
-class="page active">
+<!-- Home Page -->
+<section id="homePage" class="page active">
 
 <div class="hero">
-
-<div id="mascot">
-
-🐼
-
-</div>
-
-<h2>
-
-Let's Learn English!
-
-</h2>
-
-<p>
-
-Choose an activity
-
-</p>
-
+<div id="mascot">🐼</div>
+<h2>Let's Learn English!</h2>
+<p>Choose an activity</p>
 </div>
 
 <div class="menuGrid">
-
-<button
-class="menuCard"
-data-page="learnPage">
-
-📖
-
-<span>
-
-Learn
-
-</span>
-
+<button class="menuCard" data-page="learnPage">
+📖 <span>Learn</span>
 </button>
-
-<button
-class="menuCard"
-data-page="flashcardPage">
-
-🃏
-
-<span>
-
-Flashcards
-
-</span>
-
+<button class="menuCard" data-page="flashcardPage">
+🃏 <span>Flashcards</span>
 </button>
-
-<button
-class="menuCard"
-data-page="quizPage">
-
-🎯
-
-<span>
-
-Quiz
-
-</span>
-
+<button class="menuCard" data-page="quizPage">
+🎯 <span>Quiz</span>
 </button>
-
-<button
-class="menuCard"
-data-page="dragPage">
-
-🧩
-
-<span>
-
-Drag & Drop
-
-</span>
-
+<button class="menuCard" data-page="dragPage">
+🧩 <span>Drag & Drop</span>
 </button>
-
-<button
-class="menuCard"
-data-page="memoryPage">
-
-🧠
-
-<span>
-
-Memory
-
-</span>
-
+<button class="menuCard" data-page="memoryPage">
+🧠 <span>Memory</span>
 </button>
-
-<button
-class="menuCard"
-data-page="spellingPage">
-
-⌨
-
-<span>
-
-Spelling
-
-</span>
-
+<button class="menuCard" data-page="spellingPage">
+⌨ <span>Spelling</span>
 </button>
-
-<button
-class="menuCard"
-data-page="progressPage">
-
-🏆
-
-<span>
-
-Progress
-
-</span>
-
+<button class="menuCard" data-page="progressPage">
+🏆 <span>Progress</span>
 </button>
-
 </div>
 
 </section>
 
-<section
-id="learnPage"
-class="page">
+<!-- Learn Page -->
+<section id="learnPage" class="page">
 
 <div class="toolbar">
-
-<button class="backButton">
-
-← Home
-
-</button>
-
-<select
-id="categorySelect">
-
-<option value="all">
-
-All Categories
-
-</option>
-
+<button class="backButton">← Home</button>
+<select id="categorySelect">
+<option value="all">All Categories</option>
 </select>
-
-<input
-id="searchWord"
-type="text"
-placeholder="Search a word...">
-
+<input id="searchWord" type="text" placeholder="Search a word...">
 </div>
 
-<div
-id="lessonCard">
-
+<div id="lessonCard">
 <div class="imageBox">
-
-<img
-id="lessonImage">
-
+<img id="lessonImage">
 </div>
-
-<h2
-id="lessonWord">
-
-Apple
-
-</h2>
-
-<p
-id="lessonSentence">
-
-This is an apple.
-
-</p>
-
+<h2 id="lessonWord">Apple</h2>
+<p id="lessonSentence">This is an apple.</p>
 <div class="lessonButtons">
-
-<button
-id="speakButton">
-
-🔊 Listen
-
-</button>
-
-<button
-id="nextButton">
-
-Next →
-
-</button>
-
+<button id="speakButton">🔊 Listen</button>
+<button id="nextButton">Next →</button>
 </div>
-
 </div>
 
 </section>
 
-<section
-id="flashcardPage"
-class="page">
-
-<button
-class="backButton">
-
-← Home
-
-</button>
-
-<div
-id="flashcardContainer">
-
-</div>
-
+<!-- Flashcards Page -->
+<section id="flashcardPage" class="page">
+<button class="backButton">← Home</button>
+<div id="flashcardContainer"></div>
 </section>
 
-<section
-id="quizPage"
-class="page">
-
-<button
-class="backButton">
-
-← Home
-
-</button>
-
-<div
-id="quizContainer">
-
-</div>
-
+<!-- Quiz Page -->
+<section id="quizPage" class="page">
+<button class="backButton">← Home</button>
+<div id="quizContainer"></div>
 </section>
 
-<section
-id="dragPage"
-class="page">
-
-<button
-class="backButton">
-
-← Home
-
-</button>
-
-<div
-id="dragContainer">
-
-</div>
-
+<!-- Drag & Drop Page -->
+<section id="dragPage" class="page">
+<button class="backButton">← Home</button>
+<div id="dragContainer"></div>
 </section>
 
-<section
-id="memoryPage"
-class="page">
-
-<button
-class="backButton">
-
-← Home
-
-</button>
-
-<div
-id="memoryContainer">
-
-</div>
-
+<!-- Memory Page -->
+<section id="memoryPage" class="page">
+<button class="backButton">← Home</button>
+<div id="memoryContainer"></div>
 </section>
 
-<section
-id="spellingPage"
-class="page">
-
-<button
-class="backButton">
-
-← Home
-
-</button>
-
-<div
-id="spellingContainer">
-
-</div>
-
+<!-- Spelling Page -->
+<section id="spellingPage" class="page">
+<button class="backButton">← Home</button>
+<div id="spellingContainer"></div>
 </section>
 
-<section
-id="progressPage"
-class="page">
-
-<button
-class="backButton">
-
-← Home
-
-</button>
-
-<div
-class="progressCard">
-
-<h2>
-
-Your Progress
-
-</h2>
-
-<div
-class="bigProgress">
-
-<div
-id="progressCircle">
-
-0%
-
+<!-- Progress Page -->
+<section id="progressPage" class="page">
+<button class="backButton">← Home</button>
+<div class="progressCard">
+<h2>Your Progress</h2>
+<div class="bigProgress">
+<div id="progressCircle">0%</div>
 </div>
-
+<div id="statistics">
+<div>⭐ <span id="starsEarned">0</span></div>
+<div>🏆 <span id="badgesEarned">0</span></div>
+<div>📖 <span id="wordsLearned">0</span></div>
 </div>
-
-<div
-id="statistics">
-
-<div>
-
-⭐
-
-<span id="starsEarned">
-
-0
-
-</span>
-
 </div>
-
-<div>
-
-🏆
-
-<span id="badgesEarned">
-
-0
-
-</span>
-
-</div>
-
-<div>
-
-📖
-
-<span id="wordsLearned">
-
-0
-
-</span>
-
-</div>
-
-</div>
-
-</div>
-
 </section>
 
 </main>
 
+<!-- ===== FOOTER ===== -->
 <footer>
-
 <nav>
-
-<button
-class="navButton"
-data-page="homePage">
-
-🏠
-
-Home
-
-</button>
-
-<button
-class="navButton"
-data-page="learnPage">
-
-📖
-
-Learn
-
-</button>
-
-<button
-class="navButton"
-data-page="quizPage">
-
-🎮
-
-Play
-
-</button>
-
-<button
-class="navButton"
-data-page="progressPage">
-
-🏆
-
-Progress
-
-</button>
-
+<button class="navButton" data-page="homePage">🏠 Home</button>
+<button class="navButton" data-page="learnPage">📖 Learn</button>
+<button class="navButton" data-page="quizPage">🎮 Play</button>
+<button class="navButton" data-page="progressPage">🏆 Progress</button>
 </nav>
-
 </footer>
 
-<div
-id="confettiContainer">
+<!-- ===== MODALS ===== -->
+<div id="confettiContainer"></div>
+<div id="toast"></div>
 
+<!-- Teacher Modal -->
+<div id="teacherModal" class="modal">
+<div class="modalContent">
+<h2>Teacher Area</h2>
+<input id="teacherPassword" type="password" placeholder="Password">
+<button id="teacherLogin">Login</button>
+<button class="closeModal">Close</button>
+</div>
 </div>
 
-<div
-id="toast">
-
-</div>
-
-<div
-id="teacherModal"
-class="modal">
-
-<div
-class="modalContent">
-
-<h2>
-
-Teacher Area
-
-</h2>
-
-<input
-id="teacherPassword"
-type="password"
-placeholder="Password">
-
-<button
-id="teacherLogin">
-
-Login
-
-</button>
-
-<button
-class="closeModal">
-
-Close
-
-</button>
-
-</div>
-
-</div>
-
-<div
-id="settingsModal"
-class="modal">
-
-<div
-class="modalContent">
-
-<h2>
-
-Settings
-
-</h2>
-
-<label>
-
-Voice
-
-<select
-id="voiceSelect">
-
-</select>
-
+<!-- Settings Modal -->
+<div id="settingsModal" class="modal">
+<div class="modalContent">
+<h2>Settings</h2>
+<label>Voice
+<select id="voiceSelect"></select>
 </label>
-
-<label>
-
-Speed
-
-<input
-id="speechRate"
-type="range"
-min="0.6"
-max="1.3"
-step="0.1"
-value="1">
-
+<label>Speed
+<input id="speechRate" type="range" min="0.6" max="1.3" step="0.1" value="1">
 </label>
-
-<label>
-
-Dark Mode
-
-<input
-id="darkToggle"
-type="checkbox">
-
+<label>Dark Mode
+<input id="darkToggle" type="checkbox">
 </label>
-
-<button
-class="closeModal">
-
-Close
-
-</button>
-
+<button class="closeModal">Close</button>
+</div>
 </div>
 
-</div>
-
+<!-- ===== SCRIPTS ===== -->
 <script src="js/database.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/audio.js"></script>
@@ -636,18 +245,13 @@ Close
 <script src="js/teacher.js"></script>
 <script src="js/app.js"></script>
 
+<!-- ===== SERVICE WORKER (optional) ===== -->
 <script>
-
-if("serviceWorker" in navigator){
-
-window.addEventListener("load",()=>{
-
-navigator.serviceWorker.register("sw.js");
-
-});
-
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("sw.js");
+  });
 }
-
 </script>
 
 </body>
