@@ -1,7 +1,9 @@
 /*
 =========================================================
 SPELLING GAME
-Voir l'image, taper le mot
+Kids Visual Dictionary
+NEW FILE - #spellingContainer existed in index.html but no
+script ever populated it, so this page was blank.
 =========================================================
 */
 
@@ -10,111 +12,155 @@ Voir l'image, taper le mot
 const Spelling = {
 
     words: [],
-    current: null,
+
+    index: 0,
+
     score: 0,
 
-    init() {
-        const container = document.getElementById('spellingContainer');
-        if (!container) return;
-        this.words = Utils.shuffle([...Database.words]);
+    init(){
+
+        this.words = Utils.shuffle(Database.words);
+
+        this.index = 0;
+
         this.score = 0;
-        this.render(container);
-        this.nextWord();
+
+        this.render();
+
     },
 
-    render(container) {
+    render(){
+
+        const container = document.getElementById("spellingContainer");
+
+        if(!container) return;
+
         container.innerHTML = `
-            <div class="game-toolbar">
-                <button id="spellingReset">🔄 Nouveau</button>
-                <button id="spellingSpeak">🔊 Écouter</button>
-            </div>
-            <div class="spelling-word">
-                <img id="spellingImage" src="" alt="Mot" style="width:200px;height:200px;object-fit:contain;margin:auto;">
-                <input type="text" id="spellingInput" class="spelling-input" placeholder="Tape le mot..." autofocus>
-                <div style="margin-top:15px;font-size:1.5rem;" id="spellingFeedback"></div>
-                <div style="margin-top:10px;font-size:1.2rem;">Score: <span id="spellingScore">0</span></div>
-            </div>
+        <div class="score-panel">
+            <div class="score-box"><h3>Score</h3><h2 id="spellScore">0</h2></div>
+            <div class="score-box"><h3>Word</h3><h2 id="spellCount">1 / ${this.words.length}</h2></div>
+        </div>
+        <div class="spelling-word">
+            <img id="spellImage">
+            <button id="spellSpeak">🔊 Listen</button>
+        </div>
+        <input class="spelling-input" id="spellInput"
+            type="text" autocomplete="off" placeholder="Type the word...">
+        <div style="text-align:center;">
+            <button id="spellCheck">Check</button>
+        </div>
         `;
 
-        document.getElementById('spellingReset').onclick = () => this.init();
-        document.getElementById('spellingSpeak').onclick = () => {
-            if (this.current) {
-                Utils.speak(this.current.word, 'en-US');
-            }
+        this.showWord();
+
+        document.getElementById("spellSpeak").onclick = ()=>{
+
+            Utils.speak(this.current.word);
+
         };
 
-        const input = document.getElementById('spellingInput');
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                this.checkAnswer();
-            }
+        document.getElementById("spellCheck").onclick = ()=>this.check();
+
+        document.getElementById("spellInput").addEventListener("keydown", e=>{
+
+            if(e.key === "Enter") this.check();
+
         });
-        // Cliquer sur l'image pour écouter
-        document.getElementById('spellingImage').addEventListener('click', () => {
-            if (this.current) Utils.speak(this.current.word, 'en-US');
-        });
+
     },
 
-    nextWord() {
-        if (this.words.length === 0) {
-            // Fin du jeu
-            const feedback = document.getElementById('spellingFeedback');
-            feedback.textContent = '🎉 Félicitations ! Tu as fini !';
-            feedback.style.color = '#4CAF50';
-            Utils.createConfetti();
-            Utils.speak('Bravo !', 'fr-FR');
-            document.getElementById('spellingInput').disabled = true;
-            return;
-        }
-        this.current = this.words.pop();
-        const img = document.getElementById('spellingImage');
-        Utils.loadImage(img, this.current.image);
-        const input = document.getElementById('spellingInput');
-        input.value = '';
-        input.disabled = false;
+    showWord(){
+
+        this.current = this.words[this.index];
+
+        Utils.loadImage(
+
+            document.getElementById("spellImage"),
+
+            this.current.image
+
+        );
+
+        document.getElementById("spellCount").textContent =
+            `${this.index+1} / ${this.words.length}`;
+
+        const input = document.getElementById("spellInput");
+
+        input.value = "";
+
+        input.classList.remove("correct-answer","wrong-answer");
+
         input.focus();
-        const feedback = document.getElementById('spellingFeedback');
-        feedback.textContent = '✏️ Tape le mot en anglais';
-        feedback.style.color = '#333';
-        document.getElementById('spellingScore').textContent = this.score;
-        // Jouer automatiquement le son
-        Utils.speak(this.current.word, 'en-US');
+
+        Utils.speak(this.current.word);
+
     },
 
-    checkAnswer() {
-        if (!this.current) return;
-        const input = document.getElementById('spellingInput');
-        const userAnswer = input.value.trim().toLowerCase();
-        const correct = this.current.word.toLowerCase();
-        const feedback = document.getElementById('spellingFeedback');
+    check(){
 
-        if (userAnswer === correct) {
-            feedback.textContent = '✅ Correct !';
-            feedback.style.color = '#4CAF50';
+        const input = document.getElementById("spellInput");
+
+        const guess = input.value.trim().toLowerCase();
+
+        if(guess === this.current.word.toLowerCase()){
+
+            input.classList.add("correct-answer");
+
             this.score++;
-            document.getElementById('spellingScore').textContent = this.score;
+
+            document.getElementById("spellScore").textContent = this.score;
+
             Utils.success();
-            Progress.markWordLearned(this.current.id);
-            // Passer au mot suivant après un délai
-            input.disabled = true;
-            setTimeout(() => this.nextWord(), 1200);
-        } else {
-            feedback.textContent = `❌ Non, c'est "${this.current.word}". Essaie encore !`;
-            feedback.style.color = '#EF5350';
-            Utils.errorSound();
-            input.value = '';
-            input.focus();
-            // Donner un indice : écouter le mot
-            Utils.speak(this.current.word, 'en-US');
+
+            Utils.showToast("Correct!");
+
+            let learned = Utils.load("learned", []);
+
+            if(!learned.includes(this.current.id)){
+
+                learned.push(this.current.id);
+
+                Utils.save("learned", learned);
+
+            }
+
+            App.updateProgress();
+
         }
+        else{
+
+            input.classList.add("wrong-answer");
+
+            Utils.errorSound();
+
+            Utils.showToast(`Correct word: ${this.current.word}`);
+
+        }
+
+        setTimeout(()=>{
+
+            this.index++;
+
+            if(this.index >= this.words.length){
+
+                this.index = 0;
+
+            }
+
+            this.showWord();
+
+        },1400);
+
     }
+
 };
 
-// Initialisation automatique
-document.addEventListener('click', e => {
-    if (e.target.dataset.page === 'spellingPage') {
-        setTimeout(() => Spelling.init(), 150);
-    }
-});
+document.addEventListener("click", e=>{
 
-window.Spelling = Spelling;
+    if(e.target.dataset.page === "spellingPage"){
+
+        setTimeout(()=>Spelling.init(), 100);
+
+    }
+
+});
