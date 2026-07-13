@@ -2,6 +2,8 @@
 =========================================================
 KIDS VISUAL DICTIONARY
 MAIN APPLICATION
+Version 1.1 - FIXED: modal close buttons wired up,
+badge refresh hooked into progress updates
 =========================================================
 */
 
@@ -120,6 +122,36 @@ const App = {
         this.searchInput.addEventListener("input", e => {
 
             this.search(e.target.value);
+
+        });
+
+        /* ===========================
+           MODALS
+           FIX: these buttons previously
+           did nothing at all.
+        ============================ */
+
+        document.querySelectorAll(".closeModal").forEach(button => {
+
+            button.addEventListener("click", () => {
+
+                button.closest(".modal").style.display = "none";
+
+            });
+
+        });
+
+        document.querySelectorAll(".modal").forEach(modal => {
+
+            modal.addEventListener("click", e => {
+
+                if (e.target === modal) {
+
+                    modal.style.display = "none";
+
+                }
+
+            });
 
         });
 
@@ -360,6 +392,14 @@ const App = {
             words.textContent =
 
                 learned.length;
+
+        }
+
+        /* FIX: badges were never updated before
+           because progress.js didn't exist */
+        if (window.Progress) {
+
+            Progress.update();
 
         }
 
