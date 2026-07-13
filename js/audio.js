@@ -1,79 +1,115 @@
 /*
 =========================================================
-AUDIO MODULE
-Gestion de la synthèse vocale et des effets sonores
+AUDIO & SETTINGS
+Kids Visual Dictionary
+NEW FILE - this was referenced in index.html but never
+existed, which is why the ⚙ button, voice picker, speed
+slider and dark mode toggle all did nothing.
 =========================================================
 */
 
 "use strict";
 
-const AudioPlayer = {
+const AudioSettings = {
 
-    voice: null,
-    rate: 1,
-    pitch: 1,
+    init(){
 
-    init() {
-        // Récupérer les voix disponibles
-        if (window.speechSynthesis) {
-            window.speechSynthesis.onvoiceschanged = () => {
-                this.voice = speechSynthesis.getVoices().find(v => v.lang.startsWith('en')) || null;
-            };
+        const openBtn = document.getElementById("settingsBtn");
+
+        const modal = document.getElementById("settingsModal");
+
+        const voiceSelect = document.getElementById("voiceSelect");
+
+        const rateInput = document.getElementById("speechRate");
+
+        const darkToggle = document.getElementById("darkToggle");
+
+        if(!openBtn || !modal) return;
+
+        openBtn.addEventListener("click", ()=>{
+
+            modal.style.display = "flex";
+
+            this.populateVoices(voiceSelect);
+
+        });
+
+        /* Voices load asynchronously in most browsers */
+        if(window.speechSynthesis){
+
+            speechSynthesis.addEventListener("voiceschanged", ()=>{
+
+                this.populateVoices(voiceSelect);
+
+            });
+
         }
+
+        rateInput.value = Utils.load("speechRate", 1);
+
+        rateInput.addEventListener("input", ()=>{
+
+            Utils.save("speechRate", Number(rateInput.value));
+
+        });
+
+        darkToggle.checked = Utils.load("darkMode", false);
+
+        darkToggle.addEventListener("change", ()=>{
+
+            document.body.classList.toggle("dark", darkToggle.checked);
+
+            Utils.save("darkMode", darkToggle.checked);
+
+        });
+
+        voiceSelect.addEventListener("change", ()=>{
+
+            Utils.save("voiceName", voiceSelect.value);
+
+        });
+
     },
 
-    speak(text, lang = 'en-US') {
-        if (!window.speechSynthesis) return;
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = lang;
-        utterance.rate = this.rate;
-        utterance.pitch = this.pitch;
-        if (this.voice) utterance.voice = this.voice;
-        window.speechSynthesis.speak(utterance);
-    },
+    populateVoices(select){
 
-    playSound(type = 'success') {
-        // Effets sonores simples avec Web Audio API
-        try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            if (type === 'success') {
-                osc.frequency.value = 800;
-                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.15);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.15);
-                // Deuxième ton
-                setTimeout(() => {
-                    const osc2 = ctx.createOscillator();
-                    const gain2 = ctx.createGain();
-                    osc2.connect(gain2);
-                    gain2.connect(ctx.destination);
-                    osc2.frequency.value = 1000;
-                    gain2.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.15);
-                    osc2.start();
-                    osc2.stop(ctx.currentTime + 0.15);
-                }, 120);
-            } else if (type === 'error') {
-                osc.frequency.value = 300;
-                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.3);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.3);
-            } else {
-                osc.frequency.value = 500;
-                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.1);
-            }
-        } catch(e) { /* silencieux */ }
+        if(!window.speechSynthesis) return;
+
+        const voices = speechSynthesis.getVoices()
+            .filter(v => v.lang.startsWith("en"));
+
+        if(!voices.length || select.dataset.filled === "true") return;
+
+        select.innerHTML = "";
+
+        voices.forEach(voice=>{
+
+            const option = document.createElement("option");
+
+            option.value = voice.name;
+
+            option.textContent = `${voice.name} (${voice.lang})`;
+
+            select.appendChild(option);
+
+        });
+
+        const saved = Utils.load("voiceName", null);
+
+        if(saved && voices.some(v=>v.name===saved)){
+
+            select.value = saved;
+
+        }
+
+        select.dataset.filled = "true";
+
     }
+
 };
 
-// Initialiser au chargement
-AudioPlayer.init();
+document.addEventListener("DOMContentLoaded", ()=>{
 
-// Rendre disponible globalement
-window.AudioPlayer = AudioPlayer;
+    AudioSettings.init();
+
+});
